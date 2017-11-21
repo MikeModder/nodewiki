@@ -3,6 +3,7 @@ const app = require('express')();
 const path = require('path');
 const bodyParser = require('body-parser');
 const nedb = require('nedb-promises');
+const ipAddr = require('ip').address();
 
 /* Set some configuration stuff */
 let port = 8080;
@@ -30,7 +31,7 @@ app.use('/page', page);
 
 /* Tell Expres to listen on our chosen port  */
 app.listen(port, function(){
-	console.log('[INFO] Server ready and listening on port '+port);
+	console.log(`[INFO] Server listening on port ${port}. The current IP is ${ipAddr}`);
 	app.locals.pagesDB.load()
 		.then(function(err){
 			console.log(`[PAGEDB] Database loaded and ready!`);
