@@ -2,7 +2,7 @@ let router = require('express').Router();
 let pageTemplate = require('../models/page');
 let fs = require('fs');
 let path = require('path');
-let pagesDir = '../pages';
+let nameUtil = require('../helpers/nameUtil');
 
 router.get('/', function(req, res){
 	res.render('page_list', {serverTime: Date.now()});
@@ -22,7 +22,7 @@ router.get('/:pagename', function(req, res){
 	if(!pagename){
 		res.redirect('/');
 	}
-	let cleaned = pagename.split(' ').join('_').toLowerCase();
+	let cleaned = nameUtil.cleanInput(pagename);
 	let pagesDB = req.app.locals.pagesDB;
 
 	console.log(`cleaned name: ${cleaned}`)
@@ -32,6 +32,7 @@ router.get('/:pagename', function(req, res){
 		if(!rows) {
 			console.log(`Value of rows: ${rows}`)
 			res.render('error', {msg: 'Page not found in the databse!'});
+			return;
 		}
 		let pageId = rows.id;
 		let title = rows.name;
