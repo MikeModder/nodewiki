@@ -1,5 +1,5 @@
 function cleanInput(input){
-  let cleaned = pagename.split(' ')
+  let cleaned = input.split(' ')
     .join('_')
     .toLowerCase()
     .split('!')
