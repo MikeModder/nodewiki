@@ -6,7 +6,15 @@ let nameUtil = require('../helpers/nameUtil');
 /* GET /page. We want to show the user some recent pages. */
 router.get('/', function(req, res){
 	//Return the page_list template
-	res.render('page_list', {serverTime: Date.now()});
+	//SELECT name, cleanName, author FROM pages ORDER BY id DESC LIMIT 5;
+	let pagesDB = req.app.locals.pagesDB;
+
+	pagesDB.get('SELECT cleanName, name, author FROM pages', function(rows){
+		console.log(rows);
+		res.send(rows);
+	})
+
+	//res.render('page_list', {serverTime: Date.now()});
 });
 
 /* GET /page/new. Give the user a form to create a new page. */
@@ -15,8 +23,14 @@ router.get('/new', function(req, res){
 });
 
 /* POST /page/new. Check inputs and insert the page into the Database. */
-router.post('new', function(req, res){
-
+router.post('/new', function(req, res){
+	//res.send(req.body);
+	let title = req.title;
+	let author = req.author;
+	let content = req.content;
+	if(!title || !author || !content){
+		res.render('error', {msg: 'Cannot have empty fields!'})
+	}
 });
 
 /* GET /page/edit/{pagename}. Pull current data and let the user edit it */
