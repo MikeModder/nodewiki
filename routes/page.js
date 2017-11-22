@@ -1,13 +1,25 @@
 let router = require('express').Router();
-let pageTemplate = require('../models/page');
 let fs = require('fs');
 let path = require('path');
 let nameUtil = require('../helpers/nameUtil');
 
+/* GET /page. We want to show the user some recent pages. */
 router.get('/', function(req, res){
+	//Return the page_list template
 	res.render('page_list', {serverTime: Date.now()});
 });
 
+/* GET /page/new. Give the user a form to create a new page. */
+router.get('/new', function(req, res){
+	res.render('new_page');
+});
+
+/* POST /page/new. Check inputs and insert the page into the Database. */
+router.post('new', function(req, res){
+
+});
+
+/* GET /page/edit/{pagename}. Pull current data and let the user edit it */
 router.get('/edit/:pagename', function(req, res){
 	let pagename = req.params.pagename;
 	if(!pagename){
@@ -17,6 +29,7 @@ router.get('/edit/:pagename', function(req, res){
 	res.render('edit_page', {pagename: pagename});
 });
 
+/* GET /page/{pagename}. Pull the page info then give it to the user */
 router.get('/:pagename', function(req, res){
 	let pagename = req.params.pagename;
 	if(!pagename){
