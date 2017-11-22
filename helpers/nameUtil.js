@@ -1,11 +1,11 @@
 function cleanInput(input){
-  let cleaned = input.split(' ')
-    .join('_')
-    .toLowerCase()
-    .split('!')
-    .join('_')
-    .split(',')
-    .join('.');
+  let cleaned = input
+    .split(' ').join('_')
+    .split('!').join('_')
+    .split(',').join('.')
+    .split('(').join('_')
+    .split(')').join('_')
+    .toLowerCase();
   return cleaned;
 }
 
