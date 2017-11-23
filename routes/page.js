@@ -1,6 +1,7 @@
 let router = require('express').Router();
 let fs = require('fs');
 let path = require('path');
+let moment = require('moment');
 let nameUtil = require('../helpers/nameUtil');
 
 /* GET /page. We want to show the user some recent pages. */
@@ -17,6 +18,10 @@ router.get('/', function(req, res){
 	//res.render('page_list', {serverTime: Date.now()});
 });
 
+router.get('/debug', function(req, res){
+	res.send(`${moment()}\n${moment('1511397218040')}`)
+});
+
 /* GET /page/new. Give the user a form to create a new page. */
 router.get('/new', function(req, res){
 	res.render('new_page');
@@ -30,6 +35,8 @@ router.post('/new', function(req, res){
 	let title = req.body.title;
 	let author = req.body.author;
 	let content = req.body.content;
+	let creationTime = moment().format('MMMM Do YYYY');
+	console.log(creationTime);
 	if(!author || author === "Author"){
 		author = 'Anonymous';
 	}
@@ -38,7 +45,8 @@ router.post('/new', function(req, res){
 	}
 	let cleanTitle = nameUtil.cleanInput(title);
 	//'INSERT INTO pages (name, cleanName, createdAt, author, content) VALUES (?, ?, ?, ?, ?)'
-	pagesDB.run('INSERT INTO pages (name, cleanName, createdAt, author, content) VALUES (?, ?, ?, ?, ?)', [title, cleanTitle, Date.now(), author, content])
+
+	pagesDB.run('INSERT INTO pages (name, cleanName, createdAt, author, content) VALUES (?, ?, ?, ?, ?)', [title, cleanTitle, creationTime, author, content])
 	res.redirect(`/page/${title}`);
 
 });
@@ -77,7 +85,7 @@ router.get('/:pagename', function(req, res){
 		let content = rows.content;
 		let createdAt = rows.createdAt;
 		//res.send(rows);
-		res.render('page', {pageId: pageId, title: title, author: author, content: content, createdAt: new Date(createdAt).toUTCString()});
+		res.render('page', {pageId: pageId, title: title, author: author, content: content, createdAt: createdAt});
 	})
 
 	//res.render('error', {msg: 'If you see this page, something went horribly wrong!'});
