@@ -1,5 +1,4 @@
 function cleanInput(input){
-  console.log(`[NAMEUTIL] Input: ${input}`)
   let cleaned = input.split(' ')
     .join('_')
     .split('!').join('_')
