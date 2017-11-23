@@ -1,6 +1,5 @@
 function cleanInput(input){
-  let cleaned = input
-    .split(' ').join('_')
+  let cleaned = input.split(' ').join('_')
     .split('!').join('_')
     .split(',').join('.')
     .split('(').join('_')
