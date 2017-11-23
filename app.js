@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3');
 const ipAddr = require('ip').address();
 const readline = require('readline');
 
-/* Configure realine */
+/* Configure readline */
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
