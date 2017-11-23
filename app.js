@@ -23,7 +23,7 @@ process.stdin.on('keypress', (str, key) => {
 
 /* Set some configuration stuff */
 let port = 80;
-let dbPath = path.join(__dirname, 'data/pages_dev.db');
+let dbPath = path.join(__dirname, 'data/pages.db');
 
 /* Set up the routes */
 const index = require('./routes/index');
