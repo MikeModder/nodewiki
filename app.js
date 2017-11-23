@@ -22,7 +22,7 @@ process.stdin.on('keypress', (str, key) => {
 });
 
 /* Set some configuration stuff */
-let port = 8080;
+let port = 80;
 let dbPath = path.join(__dirname, 'data/pages_dev.db');
 
 /* Set up the routes */
