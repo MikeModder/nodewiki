@@ -25,12 +25,22 @@ router.get('/new', function(req, res){
 /* POST /page/new. Check inputs and insert the page into the Database. */
 router.post('/new', function(req, res){
 	//res.send(req.body);
-	let title = req.title;
-	let author = req.author;
-	let content = req.content;
-	if(!title || !author || !content){
+	console.log(req.body);
+	let pagesDB = req.app.locals.pagesDB;
+	let title = req.body.title;
+	let author = req.body.author;
+	let content = req.body.content;
+	if(!author || author === "Author"){
+		author = 'Anonymous';
+	}
+	if(!title || !content){
 		res.render('error', {msg: 'Cannot have empty fields!'})
 	}
+	let cleanTitle = nameUtil.cleanInput(title);
+	//'INSERT INTO pages (name, cleanName, createdAt, author, content) VALUES (?, ?, ?, ?, ?)'
+	pagesDB.run('INSERT INTO pages (name, cleanName, createdAt, author, content) VALUES (?, ?, ?, ?, ?)', [title, cleanTitle, Date.now(), author, content])
+	res.redirect(`/page/${title}`);
+
 });
 
 /* GET /page/edit/{pagename}. Pull current data and let the user edit it */
@@ -67,7 +77,7 @@ router.get('/:pagename', function(req, res){
 		let content = rows.content;
 		let createdAt = rows.createdAt;
 		//res.send(rows);
-		res.render('page', {pageId: pageId, title: title, author: author, content: content, createdAt: createdAt});
+		res.render('page', {pageId: pageId, title: title, author: author, content: content, createdAt: new Date(createdAt).toUTCString()});
 	})
 
 	//res.render('error', {msg: 'If you see this page, something went horribly wrong!'});
